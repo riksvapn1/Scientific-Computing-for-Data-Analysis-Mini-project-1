@@ -2,7 +2,7 @@
 
 This project uses Python and NumPy to perform statistical analysis on scientific data.
 
-## 🚀 How to Run This Project
+## How to Run 
 
 Follow these steps to set up the project on your local machine:
 
