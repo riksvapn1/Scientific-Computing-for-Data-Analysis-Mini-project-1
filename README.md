@@ -24,3 +24,9 @@ pip install -r requirements.txt
 python task_1.py
 
 ---
+
+# Technologies Used
+Python 3.x
+NumPy
+Pandas
+Git/GitHub
