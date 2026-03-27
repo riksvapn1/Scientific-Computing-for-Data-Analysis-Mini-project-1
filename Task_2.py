@@ -15,7 +15,7 @@ num_steps = int(T/h)
 # ---Grid Setup ---
 x_range = np.linspace(0, 25, 200)
 y_range = np.linspace(-5, 5, 100)
-X_grid, Y_grid = np.meshgrid(x_range, y_range)
+X_grid, Y_grid = np.meshgrid(x_range, y_range) # X and Y_grid same size
 
 
 fig, axes = plt.subplots(2, 2, figsize=(12, 8), sharex=True, sharey=True)
@@ -62,5 +62,5 @@ print(x_range)
 
 
 
-#plt.tight_layout()
-#plt.show()
+plt.tight_layout()
+plt.show()
