@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-# --- 1. Parameters ---
+# --Parameters ---
 N = 2000 
 T = 60 
 h = 0.1 
@@ -12,22 +12,23 @@ eps = 0.1
 particles = np.zeros((N, 2))
 num_steps = int(T/h)
 
-# --- 2. Grid Setup ---
+# ---Grid Setup ---
 x_range = np.linspace(0, 25, 200)
 y_range = np.linspace(-5, 5, 100)
 X_grid, Y_grid = np.meshgrid(x_range, y_range)
 
-norm_factor = 1 / (2 * np.pi * eps**2)
 
 fig, axes = plt.subplots(2, 2, figsize=(12, 8), sharex=True, sharey=True)
-axes = axes.flatten() # Turn 2x2 grid into a simple list of 4 spots
+axes = axes.flatten() 
 plot_idx = 0
 
-# --- 4. Simulation Loop ---
+norm_factor = 1 / (2 * np.pi * eps**2)
+
+# ---  sim loop ---
 for step in range(1, num_steps + 1): 
     
     Z = np.random.standard_normal((N, 2))
-    particles += u * h + np.sqrt(2 * D * h) * Z
+    particles += u * h + np.sqrt(2 * D * h) * Z # step
 
     
     if step in [150, 300, 450, 600]:
@@ -57,5 +58,9 @@ for step in range(1, num_steps + 1):
         fig.colorbar(cp, ax=ax, label="C(x,t)")
         plot_idx += 1
 
-plt.tight_layout()
-plt.show()
+print(x_range)
+
+
+
+#plt.tight_layout()
+#plt.show()
