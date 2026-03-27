@@ -13,7 +13,7 @@ num_steps = int(T/h)
 
 #-------fig setup---------
 fig, axes = plt.subplots(2,2,figsize=(12,8),sharex=True,sharey=True)
-axes = axes.flatten()  # Flatten to easily index 0, 1, 2, 3
+axes = axes.flatten()  
 plot_idx = 0
 
 
