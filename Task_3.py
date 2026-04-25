@@ -64,36 +64,45 @@ axes = axes.flatten()
 plot_idx = 0
 norm_factor = 1 / (2 * np.pi * eps**2)
 
-# Fixed color scale limits for consistent comparison
-v_min = 0
-v_max = 0.05 
-
 # Snapshots to match Task 1 (15s, 30s, 45s, 60s)
 output_times = [15, 30, 45, 60]
 output_steps = [int(t / h) for t in output_times]
 
-# ---  sim loop ---
+# Pre-calculate to find global maximum concentration for consistent scale
+all_C = []
+temp_particles = np.zeros((int(Q*T), 2))
+temp_N = 0
+for step in range(1, num_steps + 1):
+    Z = np.random.standard_normal((temp_N, 2))
+    temp_particles[0: temp_N, :] += u*h + np.sqrt(2*D*h)*Z
+    temp_N += int(Q*h)
+    if step in output_steps:
+        C = np.zeros_like(X_grid)
+        for k in range(temp_N):
+            xp, yp = temp_particles[k, 0], temp_particles[k, 1]
+            dist_sq = (X_grid- xp)**2 + (Y_grid- yp)**2
+            C += norm_factor * np.exp(-dist_sq / (2 * eps**2))
+        C /= total_particles_at_end
+        all_C.append(C)
+v_max_global = max(C.max() for C in all_C)
+
+# ---  sim loop ---
+plot_idx = 0
+N = 0
+particles = np.zeros((int(Q*T), 2))
 for step in range(1, num_steps + 1): 
     Z = np.random.standard_normal((N,2))
     # Euler–Maruyama step: 
     particles[0: N, :] += u*h + np.sqrt(2*D*h)*Z
-    N += int(Q*h) 
+    N += int(Q*h) # new amount of particles per step
     
     if step in output_steps:
-        C = np.zeros_like(X_grid)
-        
-        for k in range(N):
-            xp, yp = particles[k, 0], particles[k, 1]
-            dist_sq = (X_grid- xp)**2 + (Y_grid- yp)**2
-            C += norm_factor * np.exp(-dist_sq / (2 * eps**2))
-        
-        # Average the field 
-        C /= total_particles_at_end
+        C = all_C[plot_idx]
         
         # Plot on the current subplot
         ax = axes[plot_idx]
        
-        cp = ax.contourf(X_grid, Y_grid, C, levels=50, cmap='hot_r', vmin=v_min, vmax=v_max)
+        cp = ax.contourf(X_grid, Y_grid, C, levels=100, cmap='hot_r', vmin=0, vmax=v_max_global)
         
         ax.set_title(f"Concentration at t = {step*h:.1f}s")
         ax.set_xlabel("x [meters]")
