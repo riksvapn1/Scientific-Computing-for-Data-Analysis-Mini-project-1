@@ -29,7 +29,6 @@ for step in range(1, num_steps + 1):
     
     Z = np.random.standard_normal((N, 2))
     particles += u * h + np.sqrt(2 * D * h) * Z # step
-
     
     if step in [150, 300, 450, 600]:
         C = np.zeros_like(X_grid)
